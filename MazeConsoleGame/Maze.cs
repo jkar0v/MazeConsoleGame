@@ -11,7 +11,7 @@ namespace MazeConsoleApp
         public int Cols { get; }
         public int StartRow { get; }
         public int StartCol { get; }
-        private int EndRow, EndCol;
+        public int EndRow, EndCol;
 
         // Конструктор от текстов масив
         public Maze(string[] lines)

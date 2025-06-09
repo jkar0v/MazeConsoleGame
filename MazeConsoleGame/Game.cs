@@ -11,6 +11,7 @@ namespace MazeConsoleApp
         private Maze maze;
         private Player player;
         private string mazeFilePath = "maze.txt";
+        public bool lost = false;
 
         public void Start()
         {
@@ -127,6 +128,7 @@ namespace MazeConsoleApp
                             maze.Print(player);
                             Thread.Sleep(200);
                         }
+                        lost = true;
                     }
                     else
                     {
@@ -137,6 +139,17 @@ namespace MazeConsoleApp
                 }
 
                 player.Move(key, maze);
+                if (player.Row == maze.EndRow && player.Col == maze.EndCol)
+                {
+                    Console.Clear();
+                    maze.Print(player);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nПоздравления! Стигна до края на лабиринта!");
+                    Console.ResetColor();
+                    Console.WriteLine("Натисни Enter, за да се върнеш в менюто.");
+                    Console.ReadLine();
+                    break; // излиза от while цикъла и приключва текущата игра
+                }
             }
         }
     }
