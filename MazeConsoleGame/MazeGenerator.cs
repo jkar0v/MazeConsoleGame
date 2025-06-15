@@ -14,25 +14,23 @@ namespace MazeConsoleGame
         {
             int size = difficulty switch
             {
-                "easy" => 10,
-                "medium" => 20,
-                "hard" => 30,
-                _ => 5
+                "easy" => 11,
+                "medium" => 17,
+                "hard" => 27,
+                _ => 7
             };
 
             char[,] grid = new char[size, size];
 
-            // 1. Запълваме с '#'
+            // 1. Запълваме всичко със стени
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
                     grid[i, j] = '#';
 
-            // 2. Правим проходи (simple carve)
-            for (int i = 1; i < size - 1; i++)
-                for (int j = 1; j < size - 1; j++)
-                    grid[i, j] = (Random.Shared.Next(0, 4) == 0) ? '#' : ' ';
+            // 2. Генерираме само една истинска пътека с DFS
+            GenerateMazeDFS(grid, 1, 1);
 
-            // 3. Генерираме стартова и крайна позиция на различни места
+            // 3. Старт и край
             (int sr, int sc) = FindRandomFreeCell(grid, size);
             (int er, int ec) = FindRandomFreeCell(grid, size, sr, sc);
 
@@ -41,25 +39,27 @@ namespace MazeConsoleGame
 
             Maze maze = new Maze(grid);
 
-            // 4. Проверка дали има решение
+            // 4. Проверка за решение
             var solution = maze.Solve(sr, sc);
             if (solution == null)
             {
-                // Ако няма решение — рекурсивно генерираме ново ниво
-                return Generate(difficulty);
+                return Generate(difficulty); // Случва се рядко при лош старт/край
             }
-            //int fakePathCount = difficulty switch
-            //{
-            //    "easy" => 1,
-            //    "medium" => 80,
-            //    "hard" => 200,
-            //    _ => 50
-            //};
 
-            //AddFakePaths(grid, fakePathCount);
+            // 5. Добавяне на фалшиви пътеки
+            int fakePathCount = difficulty switch
+            {
+                "easy" => 10,
+                "medium" => 20,
+                "hard" => 30,
+                _ => 5
+            };
+
+            AddFakePaths(grid, fakePathCount);
 
             return maze;
         }
+
 
         private static (int, int) FindRandomFreeCell(char[,] grid, int size, int? avoidRow = null, int? avoidCol = null)
         {
@@ -73,34 +73,58 @@ namespace MazeConsoleGame
                    (avoidRow.HasValue && avoidCol.HasValue && row == avoidRow && col == avoidCol));
             return (row, col);
         }
-        //private static void AddFakePaths(char[,] maze, int count = 50)
-        //{
-        //    int rows = maze.GetLength(0);
-        //    int cols = maze.GetLength(1);
+        private static void AddFakePaths(char[,] maze, int count = 50)
+        {
+            int rows = maze.GetLength(0);
+            int cols = maze.GetLength(1);
 
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        int r = random.Next(1, rows - 1);
-        //        int c = random.Next(1, cols - 1);
+            for (int i = 0; i < count; i++)
+            {
+                int r = random.Next(1, rows - 1);
+                int c = random.Next(1, cols - 1);
 
-        //        if (maze[r, c] == '#')
-        //        {
-        //            // Ако до тази клетка има проход, я отваряме
-        //            int[] dRows = { -1, 1, 0, 0 };
-        //            int[] dCols = { 0, 0, -1, 1 };
+                if (maze[r, c] == '#')
+                {
+                    // Ако до тази клетка има проход, я отваряме
+                    int[] dRows = { -1, 1, 0, 0 };
+                    int[] dCols = { 0, 0, -1, 1 };
 
-        //            for (int d = 0; d < 4; d++)
-        //            {
-        //                int nr = r + dRows[d];
-        //                int nc = c + dCols[d];
-        //                if (maze[nr, nc] == ' ')
-        //                {
-        //                    maze[r, c] = ' ';
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                    for (int d = 0; d < 4; d++)
+                    {
+                        int nr = r + dRows[d];
+                        int nc = c + dCols[d];
+                        if (maze[nr, nc] == ' ')
+                        {
+                            maze[r, c] = ' ';
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        private static void GenerateMazeDFS(char[,] grid, int row, int col)
+        {
+            int[] dRows = { -2, 2, 0, 0 };
+            int[] dCols = { 0, 0, -2, 2 };
+            var directions = Enumerable.Range(0, 4).OrderBy(_ => random.Next()).ToList();
+
+            grid[row, col] = ' ';
+
+            foreach (int dir in directions)
+            {
+                int newRow = row + dRows[dir];
+                int newCol = col + dCols[dir];
+
+                if (newRow > 0 && newRow < grid.GetLength(0) - 1 &&
+                    newCol > 0 && newCol < grid.GetLength(1) - 1 &&
+                    grid[newRow, newCol] == '#')
+                {
+                    int wallRow = row + dRows[dir] / 2;
+                    int wallCol = col + dCols[dir] / 2;
+                    grid[wallRow, wallCol] = ' ';
+                    GenerateMazeDFS(grid, newRow, newCol);
+                }
+            }
+        }
     }
 }

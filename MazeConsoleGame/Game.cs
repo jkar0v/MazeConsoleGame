@@ -87,10 +87,24 @@ namespace MazeConsoleApp
         private void PlayRandomMaze()
         {
             Console.Clear();
-            Console.WriteLine("Избери трудност: easy / medium / hard");
-            string difficulty = Console.ReadLine().ToLower();
+            Console.WriteLine("Избери трудност: 1 - easy / 2 - medium / 3 - hard");
+            string difficulty = Console.ReadLine();
+            switch(difficulty)
+            {
+                case "1":
+                    difficulty = "easy";
+                    break;
+                case "2":
+                    difficulty = "medium";
+                    break;
+                case "3":
+                    difficulty = "hard";
+                    break;
+                default:
+                    break;
+            }
 
-            maze = MazeGenerator.Generate(difficulty); // ще го направиш по-късно
+            maze = MazeGenerator.Generate(difficulty);
             player = new Player(maze.StartRow, maze.StartCol);
 
             PlayLoop();
