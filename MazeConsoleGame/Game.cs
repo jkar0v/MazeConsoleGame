@@ -1,4 +1,4 @@
-using MazeConsoleGame;
+ï»¿using MazeConsoleGame;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,11 +26,11 @@ namespace MazeConsoleApp
         {
             Console.Clear();
             Console.WriteLine("=== MAZE GAME ===\n");
-            Console.WriteLine("1. Èãðàé íèâî (îò ôàéë)");
-            Console.WriteLine("2. Ãåíåðèðàé ëàáèðèíò");
-            Console.WriteLine("3. Èçõîä\n");
+            Console.WriteLine("1. Ð˜Ð³Ñ€Ð°Ð¹ Ð½Ð¸Ð²Ð¾ (Ð¾Ñ‚ Ñ„Ð°Ð¹Ð»)");
+            Console.WriteLine("2. Ð“ÐµÐ½ÐµÑ€Ð¸Ñ€Ð°Ð¹ Ð»Ð°Ð±Ð¸Ñ€Ð¸Ð½Ñ‚");
+            Console.WriteLine("3. Ð˜Ð·Ñ…Ð¾Ð´\n");
 
-            Console.Write("Èçáåðè îïöèÿ: ");
+            Console.Write("Ð˜Ð·Ð±ÐµÑ€Ð¸ Ð¾Ð¿Ñ†Ð¸Ñ: ");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -42,11 +42,11 @@ namespace MazeConsoleApp
                     PlayRandomMaze();
                     break;
                 case "3":
-                    Console.WriteLine("Èçëèçàíå...");
+                    Console.WriteLine("Ð˜Ð·Ð»Ð¸Ð·Ð°Ð½Ðµ...");
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("Íåâàëèäåí èçáîð. Íàòèñíè Enter.");
+                    Console.WriteLine("ÐÐµÐ²Ð°Ð»Ð¸Ð´ÐµÐ½ Ð¸Ð·Ð±Ð¾Ñ€. ÐÐ°Ñ‚Ð¸ÑÐ½Ð¸ Enter.");
                     Console.ReadLine();
                     break;
             }
@@ -55,7 +55,7 @@ namespace MazeConsoleApp
         private void PlayLevel()
         {
             Console.Clear();
-            Console.WriteLine("Èçáåðè íèâî:");
+            Console.WriteLine("Ð˜Ð·Ð±ÐµÑ€Ð¸ Ð½Ð¸Ð²Ð¾:");
 
             string[] files = Directory.GetFiles("Levels", "*.txt");
 
@@ -64,16 +64,16 @@ namespace MazeConsoleApp
                 Console.WriteLine($"{i + 1}. {Path.GetFileName(files[i])}");
             }
 
-            Console.Write("Âúâåäè íîìåð íà íèâî: ");
+            Console.Write("Ð’ÑŠÐ²ÐµÐ´Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Ð½Ð° Ð½Ð¸Ð²Ð¾: ");
             if (int.TryParse(Console.ReadLine(), out int selected) &&
                 selected >= 1 && selected <= files.Length)
             {
                 mazeFilePath = files[selected - 1];
-                PlayFromFile(); // èçïîëçâàìå âå÷å ãîòîâèÿ ìåòîä!
+                PlayFromFile(); // Ð¸Ð·Ð¿Ð¾Ð»Ð·Ð²Ð°Ð¼Ðµ Ð²ÐµÑ‡Ðµ Ð³Ð¾Ñ‚Ð¾Ð²Ð¸Ñ Ð¼ÐµÑ‚Ð¾Ð´!
             }
             else
             {
-                Console.WriteLine("Íåâàëèäåí èçáîð. Íàòèñíè Enter.");
+                Console.WriteLine("ÐÐµÐ²Ð°Ð»Ð¸Ð´ÐµÐ½ Ð¸Ð·Ð±Ð¾Ñ€. ÐÐ°Ñ‚Ð¸ÑÐ½Ð¸ Enter.");
                 Console.ReadLine();
             }
         }
@@ -87,10 +87,10 @@ namespace MazeConsoleApp
         private void PlayRandomMaze()
         {
             Console.Clear();
-            Console.WriteLine("Èçáåðè òðóäíîñò: easy / medium / hard");
+            Console.WriteLine("Ð˜Ð·Ð±ÐµÑ€Ð¸ Ñ‚Ñ€ÑƒÐ´Ð½Ð¾ÑÑ‚: easy / medium / hard");
             string difficulty = Console.ReadLine().ToLower();
 
-            maze = MazeGenerator.Generate(difficulty); // ùå ãî íàïðàâèø ïî-êúñíî
+            maze = MazeGenerator.Generate(difficulty); // Ñ‰Ðµ Ð³Ð¾ Ð½Ð°Ð¿Ñ€Ð°Ð²Ð¸Ñˆ Ð¿Ð¾-ÐºÑŠÑÐ½Ð¾
             player = new Player(maze.StartRow, maze.StartCol);
 
             PlayLoop();
@@ -109,7 +109,7 @@ namespace MazeConsoleApp
             {
                 Console.Clear();
                 maze.Print(player);
-                Console.WriteLine("Move with W/A/S/D. Enter 0 to show solution. Q to quit.");
+                Console.WriteLine("Move with W/A/S/D or â† â†‘ â†“ â†’. Enter 0 to show solution. Q to quit.");
                 var key = Console.ReadKey(true).Key;
 
                 if (key == ConsoleKey.Q)
@@ -144,11 +144,11 @@ namespace MazeConsoleApp
                     Console.Clear();
                     maze.Print(player);
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nÏîçäðàâëåíèÿ! Ñòèãíà äî êðàÿ íà ëàáèðèíòà!");
+                    Console.WriteLine("\nÐŸÐ¾Ð·Ð´Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ! Ð¡Ñ‚Ð¸Ð³Ð½Ð° Ð´Ð¾ ÐºÑ€Ð°Ñ Ð½Ð° Ð»Ð°Ð±Ð¸Ñ€Ð¸Ð½Ñ‚Ð°!");
                     Console.ResetColor();
-                    Console.WriteLine("Íàòèñíè Enter, çà äà ñå âúðíåø â ìåíþòî.");
+                    Console.WriteLine("ÐÐ°Ñ‚Ð¸ÑÐ½Ð¸ Enter, Ð·Ð° Ð´Ð° ÑÐµ Ð²ÑŠÑ€Ð½ÐµÑˆ Ð² Ð¼ÐµÐ½ÑŽÑ‚Ð¾.");
                     Console.ReadLine();
-                    break; // èçëèçà îò while öèêúëà è ïðèêëþ÷âà òåêóùàòà èãðà
+                    break; // Ð¸Ð·Ð»Ð¸Ð·Ð° Ð¾Ñ‚ while Ñ†Ð¸ÐºÑŠÐ»Ð° Ð¸ Ð¿Ñ€Ð¸ÐºÐ»ÑŽÑ‡Ð²Ð° Ñ‚ÐµÐºÑƒÑ‰Ð°Ñ‚Ð° Ð¸Ð³Ñ€Ð°
                 }
             }
         }

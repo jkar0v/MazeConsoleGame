@@ -17,15 +17,24 @@ namespace MazeConsoleApp
         public void Move(ConsoleKey key, Maze maze)
         {
             int newRow = Row, newCol = Col;
-            if ()
+            switch (key)
             {
-                switch (key)
-                {
-                    case ConsoleKey.W: newRow--; break;
-                    case ConsoleKey.S: newRow++; break;
-                    case ConsoleKey.A: newCol--; break;
-                    case ConsoleKey.D: newCol++; break;
-                }
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                    newRow--;
+                    break;
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                    newRow++;
+                    break;
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    newCol--;
+                    break;
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                    newCol++;
+                    break;
             }
 
             if (maze.IsFree(newRow, newCol))

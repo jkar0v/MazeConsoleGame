@@ -9,8 +9,9 @@ namespace MazeConsoleApp
         private char[,] grid;
         public int Rows { get; }
         public int Cols { get; }
-        public int StartRow { get; }
-        public int StartCol { get; }
+        public int StartRow { get; private set; }
+        public int StartCol { get; private set; }
+
         public int EndRow, EndCol;
 
         //  онструктор от текстов масив
@@ -20,15 +21,33 @@ namespace MazeConsoleApp
             Cols = lines[0].Length;
             grid = new char[Rows, Cols];
 
+            bool foundStart = false, foundEnd = false;
+
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Cols; j++)
                 {
                     grid[i, j] = lines[i][j];
-                    if (grid[i, j] == '@') { StartRow = i; StartCol = j; }
-                    if (grid[i, j] == 'X') { EndRow = i; EndCol = j; }
+                    if (grid[i, j] == '@')
+                    {
+                        StartRow = i;
+                        StartCol = j;
+                        foundStart = true;
+                    }
+                    else if (grid[i, j] == 'X')
+                    {
+                        EndRow = i;
+                        EndCol = j;
+                        foundEnd = true;
+                    }
+
+                    if (foundStart && foundEnd)
+                        break;
                 }
+                if (foundStart && foundEnd)
+                    break;
             }
+
         }
 
         //  онструктор от двумерен масив (за автоматично генериране)
