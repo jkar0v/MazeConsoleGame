@@ -129,26 +129,28 @@ namespace MazeConsoleApp
                 if (key == ConsoleKey.Q)
                     break;
 
-                if (key == ConsoleKey.D0)
+                if (key == ConsoleKey.D0 || key == ConsoleKey.NumPad0)
                 {
-                    var path = maze.Solve(player.Row, player.Col);
-                    if (path != null)
-                    {
-                        foreach (var step in path)
-                        {
-                            player.Row = step.Item1;
-                            player.Col = step.Item2;
-                            Console.Clear();
-                            maze.Print(player);
-                            Thread.Sleep(200);
-                        }
-                        lost = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("No solution found.");
-                        Console.ReadKey();
-                    }
+                    maze.ShowHelpPaths(player.Row, player.Col); // Оцветява пътя от началото и от човека до края
+                    //var path = maze.Solve(maze.StartRow, maze.StartCol, maze.EndRow, maze.EndCol);
+                    //if (path != null)
+                    //{
+                    //    foreach (var (r, c) in path)
+                    //    {
+                    //        player.Row = r;
+                    //        player.Col = c;
+                    //        Console.Clear();
+                    //        maze.Print(player);
+                    //        Thread.Sleep(100); // по-кратко за по-бърза анимация
+                    //    }
+                    //    Console.WriteLine("\nНатисни Enter.");
+                    //    Console.ReadLine();
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("No solution found.");
+                    //    Console.ReadKey();
+                    //}
                     continue;
                 }
 

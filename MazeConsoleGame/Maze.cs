@@ -89,6 +89,16 @@ namespace MazeConsoleApp
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Write('X');
                     }
+                    else if (grid[i, j] == '.')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write('.');
+                    }
+                    else if (grid[i, j] == '*')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write('*');
+                    }
                     else
                     {
                         Console.ResetColor();
@@ -107,7 +117,7 @@ namespace MazeConsoleApp
                    grid[row, col] != '#';
         }
 
-        public List<(int, int)> Solve(int startRow, int startCol)
+        public List<(int, int)> Solve(int startRow, int startCol, int endRow, int endCol)
         {
             var queue = new Queue<(int, int)>();
             var visited = new bool[Rows, Cols];
@@ -121,10 +131,10 @@ namespace MazeConsoleApp
             while (queue.Count > 0)
             {
                 var (r, c) = queue.Dequeue();
-                if (grid[r, c] == 'X')
+                if (r == endRow && c == endCol)
                 {
                     var path = new List<(int, int)>();
-                    while (parent[r, c] != null)
+                    while (r != startRow || c != startCol)
                     {
                         path.Add((r, c));
                         (r, c) = parent[r, c].Value;
@@ -133,19 +143,52 @@ namespace MazeConsoleApp
                     return path;
                 }
 
-                for (int d = 0; d < 4; d++)
+                for (int i = 0; i < 4; i++)
                 {
-                    int nr = r + dr[d], nc = c + dc[d];
+                    int nr = r + dr[i], nc = c + dc[i];
                     if (IsFree(nr, nc) && !visited[nr, nc])
                     {
-                        queue.Enqueue((nr, nc));
                         visited[nr, nc] = true;
                         parent[nr, nc] = (r, c);
+                        queue.Enqueue((nr, nc));
                     }
                 }
             }
-
             return null;
+        }
+        public void ShowHelpPaths(int playerRow, int playerCol)
+        {
+            // 1. Изчистване на стари символи
+            for (int i = 0; i < Rows; i++)
+                for (int j = 0; j < Cols; j++)
+                    if (grid[i, j] == '.' || grid[i, j] == '*')
+                        grid[i, j] = ' ';
+
+            // 2. Път от начало до край
+            var pathToEnd = Solve(StartRow, StartCol, EndRow, EndCol);
+
+            // 3. Път от текущата позиция до началото
+            var pathToStart = Solve(playerRow, playerCol, StartRow, StartCol);
+
+            // 4. Маркиране на пътя до края с '.'
+            if (pathToEnd != null)
+            {
+                foreach (var (r, c) in pathToEnd)
+                {
+                    if (grid[r, c] == ' ')
+                        grid[r, c] = '.';
+                }
+            }
+
+            // 5. Маркиране на пътя до началото с '*'
+            if (pathToStart != null)
+            {
+                foreach (var (r, c) in pathToStart)
+                {
+                    if (grid[r, c] == ' ')
+                        grid[r, c] = '*';
+                }
+            }
         }
     }
 }

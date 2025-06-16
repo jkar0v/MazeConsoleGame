@@ -40,7 +40,7 @@ namespace MazeConsoleGame
             Maze maze = new Maze(grid);
 
             // 4. Проверка за решение
-            var solution = maze.Solve(sr, sc);
+            var solution = maze.Solve(sr, sc, er, ec);
             if (solution == null)
             {
                 return Generate(difficulty); // Случва се рядко при лош старт/край
