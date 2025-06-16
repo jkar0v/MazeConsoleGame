@@ -17,8 +17,9 @@ namespace MazeConsoleGame
                 "easy" => 11,
                 "medium" => 17,
                 "hard" => 27,
-                _ => 7
+                _ => GetRandomOdd(11, 31)
             };
+            
 
             char[,] grid = new char[size, size];
 
@@ -126,5 +127,15 @@ namespace MazeConsoleGame
                 }
             }
         }
+        static int GetRandomOdd(int min, int max)
+        {
+            int number;
+            do
+            {
+                number = Random.Shared.Next(11, 31);
+            } while (number % 2 == 0);
+            return number;
+        }
+
     }
 }

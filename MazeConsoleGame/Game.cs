@@ -31,23 +31,26 @@ namespace MazeConsoleApp
             Console.WriteLine("3. Изход\n");
 
             Console.Write("Избери опция: ");
-            string choice = Console.ReadLine();
+            ConsoleKey key = Console.ReadKey(true).Key;
 
-            switch (choice)
+            switch (key)
             {
-                case "1":
+                case ConsoleKey.D1:
+                case ConsoleKey.NumPad1:
                     PlayLevel();
                     break;
-                case "2":
+                case ConsoleKey.D2:
+                case ConsoleKey.NumPad2:
                     PlayRandomMaze();
                     break;
-                case "3":
+                case ConsoleKey.D3:
+                case ConsoleKey.NumPad3:
                     Console.WriteLine("Излизане...");
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("Невалиден избор. Натисни Enter.");
-                    Console.ReadLine();
+                    Console.WriteLine("\nНевалиден избор!");
+                    Thread.Sleep(1000); // малко изчакване за ефект
                     break;
             }
         }
@@ -83,24 +86,44 @@ namespace MazeConsoleApp
             LoadMazeFromFile();
             PlayLoop();
         }
+        private void LoadMazeFromFile()
+        {
+            var lines = File.ReadAllLines(mazeFilePath);
+            maze = new Maze(lines);
+            player = new Player(maze.StartRow, maze.StartCol);
+        }
 
         private void PlayRandomMaze()
         {
             Console.Clear();
-            Console.WriteLine("Избери трудност: 1 - easy / 2 - medium / 3 - hard");
-            string difficulty = Console.ReadLine();
-            switch(difficulty)
+            Console.WriteLine("Избери трудност:");
+            Console.WriteLine("1 - easy");
+            Console.WriteLine("2 - medium");
+            Console.WriteLine("3 - hard\n");
+            Console.Write("Избери опция: ");
+
+            string difficulty = null;
+
+            ConsoleKey key = Console.ReadKey(true).Key;
+
+            switch (key)
             {
-                case "1":
+                case ConsoleKey.D1:
+                case ConsoleKey.NumPad1:
                     difficulty = "easy";
                     break;
-                case "2":
+                case ConsoleKey.D2:
+                case ConsoleKey.NumPad2:
                     difficulty = "medium";
                     break;
-                case "3":
+                case ConsoleKey.D3:
+                case ConsoleKey.NumPad3:
                     difficulty = "hard";
                     break;
                 default:
+                    Console.Clear();
+                    Console.WriteLine("Невалиден избор. Избираме случайно...");
+                    Thread.Sleep(1000); // малко изчакване за ефект
                     break;
             }
 
@@ -110,12 +133,7 @@ namespace MazeConsoleApp
             PlayLoop();
         }
 
-        private void LoadMazeFromFile()
-        {
-            var lines = File.ReadAllLines(mazeFilePath);
-            maze = new Maze(lines);
-            player = new Player(maze.StartRow, maze.StartCol);
-        }
+
 
         private void PlayLoop()
         {
