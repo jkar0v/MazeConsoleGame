@@ -146,8 +146,6 @@ namespace MazeConsoleApp
             return grid[row, col];
         }
 
-
-
         public bool IsFree(int row, int col)
         {
             return row >= 0 && row < Rows &&
@@ -157,11 +155,11 @@ namespace MazeConsoleApp
 
         public List<(int, int)> Solve(int startRow, int startCol, int endRow, int endCol)
         {
-            var queue = new Queue<(int, int)>();
-            var visited = new bool[Rows, Cols];
-            var parent = new (int, int)?[Rows, Cols];
+            Queue<(int, int)> queue = new Queue<(int, int)>();
+            HashSet<(int, int)> visited = new HashSet<(int, int)>();
+            Dictionary<(int, int), (int, int)> parent = new Dictionary<(int, int), (int, int)>();
             queue.Enqueue((startRow, startCol));
-            visited[startRow, startCol] = true;
+            visited.Add((startRow, startCol));
 
             int[] dr = { -1, 1, 0, 0 };
             int[] dc = { 0, 0, -1, 1 };
@@ -175,7 +173,7 @@ namespace MazeConsoleApp
                     while (r != startRow || c != startCol)
                     {
                         path.Add((r, c));
-                        (r, c) = parent[r, c].Value;
+                        (r, c) = parent[(r, c)];
                     }
                     path.Reverse();
                     return path;
@@ -184,10 +182,10 @@ namespace MazeConsoleApp
                 for (int i = 0; i < 4; i++)
                 {
                     int nr = r + dr[i], nc = c + dc[i];
-                    if (IsFree(nr, nc) && !visited[nr, nc])
+                    if (IsFree(nr, nc) && !visited.Contains((nr, nc)))
                     {
-                        visited[nr, nc] = true;
-                        parent[nr, nc] = (r, c);
+                        visited.Add((nr, nc));
+                        parent[(nr, nc)] = (r, c);
                         queue.Enqueue((nr, nc));
                     }
                 }
