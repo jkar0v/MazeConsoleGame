@@ -17,9 +17,9 @@ namespace MazeConsoleGame
                 "easy" => 11,
                 "medium" => 17,
                 "hard" => 27,
-                _ => GetRandomOdd(11, 31)
+                _ => GetRandomOdd(11, 55)
             };
-            
+
 
             char[,] grid = new char[size, size];
 
@@ -44,7 +44,7 @@ namespace MazeConsoleGame
             var solution = maze.Solve(sr, sc, er, ec);
             if (solution == null)
             {
-                return Generate(difficulty); // Случва се рядко при лош старт/край
+                return Generate(difficulty);
             }
 
             // 5. Добавяне на фалшиви пътеки
@@ -53,7 +53,7 @@ namespace MazeConsoleGame
                 "easy" => 10,
                 "medium" => 20,
                 "hard" => 30,
-                _ => 5
+                _ => Random.Shared.Next(10, 50)
             };
 
             AddFakePaths(grid, fakePathCount);
@@ -84,12 +84,14 @@ namespace MazeConsoleGame
                 int r = random.Next(1, rows - 1);
                 int c = random.Next(1, cols - 1);
 
+                // Ако до тази клетка има проход, я отваряме
                 if (maze[r, c] == '#')
                 {
-                    // Ако до тази клетка има проход, я отваряме
+                    // Проверяваме дали има поне един съседен проход
                     int[] dRows = { -1, 1, 0, 0 };
                     int[] dCols = { 0, 0, -1, 1 };
 
+                    // Проверяваме всички четири посоки
                     for (int d = 0; d < 4; d++)
                     {
                         int nr = r + dRows[d];
@@ -105,9 +107,22 @@ namespace MazeConsoleGame
         }
         private static void GenerateMazeDFS(char[,] grid, int row, int col)
         {
+            // Проверка за стена на по-голямо разстояние
             int[] dRows = { -2, 2, 0, 0 };
             int[] dCols = { 0, 0, -2, 2 };
-            var directions = Enumerable.Range(0, 4).OrderBy(_ => random.Next()).ToList();
+
+            // Създаваме списък с числата 0, 1, 2 и 3 — това са индекси за посоките
+            List<int> directions = new List<int> { 0, 1, 2, 3 };
+
+            // Разбъркваме списъка с помощта на случайния генератор
+            for (int i = 0; i < directions.Count; i++)
+            {
+                int j = random.Next(i, directions.Count);
+                int temp = directions[i];
+                directions[i] = directions[j];
+                directions[j] = temp;
+            }
+
 
             grid[row, col] = ' ';
 

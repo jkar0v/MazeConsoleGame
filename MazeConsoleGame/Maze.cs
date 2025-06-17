@@ -152,6 +152,7 @@ namespace MazeConsoleApp
                    grid[row, col] != '#';
         }
 
+        //Търсене в ширина с BFS
         public List<(int, int)> Solve(int startRow, int startCol, int endRow, int endCol)
         {
             Queue<(int, int)> queue = new Queue<(int, int)>();
@@ -160,12 +161,15 @@ namespace MazeConsoleApp
             queue.Enqueue((startRow, startCol));
             visited.Add((startRow, startCol));
 
+            //Придвижване в графа наляво и надясно
             int[] dr = { -1, 1, 0, 0 };
             int[] dc = { 0, 0, -1, 1 };
 
             while (queue.Count > 0)
             {
                 var (r, c) = queue.Dequeue();
+
+                // Проверка дали сме стигнали до края
                 if (r == endRow && c == endCol)
                 {
                     var path = new List<(int, int)>();
@@ -178,6 +182,7 @@ namespace MazeConsoleApp
                     return path;
                 }
 
+                // Проверка за съседни клетки
                 for (int i = 0; i < 4; i++)
                 {
                     int nr = r + dr[i], nc = c + dc[i];

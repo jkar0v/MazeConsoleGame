@@ -184,7 +184,7 @@ namespace MazeConsoleApp
                 Console.WriteLine("Натиснете Enter за да опитате пак. Или Q за да се върнете към менюто.");
                 var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.Q)
-                    Start();                    
+                    Start();
             }
             // Изчистваме конзолата и рисуваме лабиринта
             Console.Clear();
@@ -199,11 +199,8 @@ namespace MazeConsoleApp
             bool done = false;
             while (true)
             {
-                if (!done)
-                {
-                    Console.SetCursorPosition(0, maze.Rows + 1);
-                    ShowRules();
-                }
+                Console.SetCursorPosition(0, maze.Rows + 1);
+                ShowRules();
                 var key = Console.ReadKey(true).Key;
 
                 //Напускаме играта
@@ -231,7 +228,6 @@ namespace MazeConsoleApp
                             maze.Print(player);
                             Thread.Sleep(100);
                         }
-                        done = true;
                     }
                     else
                     {
@@ -265,7 +261,7 @@ namespace MazeConsoleApp
                 // Проверяваме дали играчът е стигнал до края на лабиринта
                 if (player.Row == maze.EndRow && player.Col == maze.EndCol)
                 {
-                    Console.SetCursorPosition(0, maze.Rows + 2);
+                    Console.SetCursorPosition(0, maze.Rows + 11);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Поздравления! Стигна до края на лабиринта!");
                     Console.ResetColor();
