@@ -27,8 +27,8 @@ namespace MazeConsoleApp
         {
             Console.Clear();
             Console.WriteLine("=== MAZE GAME ===\n");
-            Console.WriteLine("1. Play level");
-            Console.WriteLine("2. Generate maze");
+            Console.WriteLine("1. Play Level");
+            Console.WriteLine("2. Generate Maze");
             Console.WriteLine("3. Exit\n");
 
             Console.Write("Your choice: ");
@@ -92,7 +92,7 @@ namespace MazeConsoleApp
                 return int.Parse(numberPart);
             }
 
-            Console.Write("\nEnter a number of a level: ");
+            Console.Write("\nEnter number of a level: ");
             if (int.TryParse(Console.ReadLine(), out int selected) &&
                 selected >= 1 && selected <= files.Length)
             {
@@ -193,7 +193,7 @@ namespace MazeConsoleApp
             // Позиционираме играча в началото
             Console.SetCursorPosition(player.Col, player.Row);
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write('@');
+            Console.Write('O');
             Console.ResetColor();
 
             bool done = false;
@@ -255,7 +255,7 @@ namespace MazeConsoleApp
                 // Рисуваме новата позиция
                 Console.SetCursorPosition(player.Col, player.Row);
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write('@');
+                Console.Write('O');
                 Console.ResetColor();
 
                 // Проверяваме дали играчът е стигнал до края на лабиринта

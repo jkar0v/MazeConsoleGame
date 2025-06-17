@@ -27,7 +27,7 @@ namespace MazeConsoleApp
                 for (int j = 0; j < Cols; j++)
                 {
                     grid[i, j] = lines[i][j];
-                    if (grid[i, j] == '@')
+                    if (grid[i, j] == 'O')
                     {
                         StartRow = i;
                         StartCol = j;
@@ -56,7 +56,7 @@ namespace MazeConsoleApp
                 for (int j = 0; j < Cols; j++)
                 {
                     grid[i, j] = customGrid[i, j];
-                    if (grid[i, j] == '@') { StartRow = i; StartCol = j; }
+                    if (grid[i, j] == 'O') { StartRow = i; StartCol = j; }
                     if (grid[i, j] == 'X') { EndRow = i; EndCol = j; }
                 }
             }
@@ -71,7 +71,7 @@ namespace MazeConsoleApp
                     if (i == player.Row && j == player.Col)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write('@');
+                        Console.Write('O');
                     }
                     else if (grid[i, j] == '#')
                     {

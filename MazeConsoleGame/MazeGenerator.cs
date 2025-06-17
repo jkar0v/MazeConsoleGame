@@ -35,7 +35,7 @@ namespace MazeConsoleGame
             (int sr, int sc) = FindRandomFreeCell(grid, size);
             (int er, int ec) = FindRandomFreeCell(grid, size, sr, sc);
 
-            grid[sr, sc] = '@';
+            grid[sr, sc] = 'O';
             grid[er, ec] = 'X';
 
             Maze maze = new Maze(grid);
