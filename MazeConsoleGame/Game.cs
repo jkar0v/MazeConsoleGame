@@ -27,11 +27,11 @@ namespace MazeConsoleApp
         {
             Console.Clear();
             Console.WriteLine("=== MAZE GAME ===\n");
-            Console.WriteLine("1. Играй ниво (от файл)");
-            Console.WriteLine("2. Генерирай лабиринт");
-            Console.WriteLine("3. Изход\n");
+            Console.WriteLine("1. Play level");
+            Console.WriteLine("2. Generate maze");
+            Console.WriteLine("3. Exit\n");
 
-            Console.Write("Избери опция: ");
+            Console.Write("Your choice: ");
             ConsoleKey key = Console.ReadKey(true).Key;
 
             switch (key)
@@ -46,11 +46,11 @@ namespace MazeConsoleApp
                     break;
                 case ConsoleKey.D3:
                 case ConsoleKey.NumPad3:
-                    Console.WriteLine("Излизане...");
+                    Console.WriteLine("Exiting...");
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("\nНевалиден избор!");
+                    Console.WriteLine("\nWrong choice!");
                     Thread.Sleep(1000);
                     break;
             }
@@ -59,7 +59,7 @@ namespace MazeConsoleApp
         private void PlayLevel()
         {
             Console.Clear();
-            Console.WriteLine("Избери ниво:");
+            Console.WriteLine("Choose a level:");
 
             string[] files = Directory.GetFiles(@"..\..\..\Levels", "*.txt");
 
@@ -92,7 +92,7 @@ namespace MazeConsoleApp
                 return int.Parse(numberPart);
             }
 
-            Console.Write("\nВъведи номер на ниво: ");
+            Console.Write("\nEnter a number of a level: ");
             if (int.TryParse(Console.ReadLine(), out int selected) &&
                 selected >= 1 && selected <= files.Length)
             {
@@ -101,7 +101,7 @@ namespace MazeConsoleApp
             }
             else
             {
-                Console.WriteLine("Невалиден избор. Опитай пак.");
+                Console.WriteLine("Wrong choice. Try again.");
                 Thread.Sleep(1000);
             }
         }
@@ -179,9 +179,9 @@ namespace MazeConsoleApp
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Моля, пуснете играта на цел екран!");
+                Console.WriteLine("Please, enter fullscreen!");
                 Console.ResetColor();
-                Console.WriteLine("Натиснете Enter за да опитате пак. Или Q за да се върнете към менюто.");
+                Console.WriteLine("Click Enter for try again. Or Q to go back.");
                 var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.Q)
                     Start();
@@ -263,9 +263,9 @@ namespace MazeConsoleApp
                 {
                     Console.SetCursorPosition(0, maze.Rows + 11);
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Поздравления! Стигна до края на лабиринта!");
+                    Console.WriteLine("Congratulations! You finished the maze!");
                     Console.ResetColor();
-                    Console.WriteLine("Натисни Enter, за да се върнеш в менюто.");
+                    Console.WriteLine("Click Enter to go back.");
                     Console.ReadLine();
                     break;
                 }
