@@ -136,6 +136,5 @@ namespace MazeConsoleGame
             } while (number % 2 == 0);
             return number;
         }
-
     }
 }

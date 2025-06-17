@@ -104,6 +104,49 @@ namespace MazeConsoleApp
                 Console.WriteLine();
             }
         }
+        public void Print()
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Cols; j++)
+                {
+                    if (grid[i, j] == '#')
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write('#');
+                    }
+                    else if (grid[i, j] == 'X')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write('X');
+                    }
+                    else if (grid[i, j] == '.')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write('.');
+                    }
+                    else if (grid[i, j] == '*')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write('*');
+                    }
+                    else
+                    {
+                        Console.ResetColor();
+                        Console.Write(grid[i, j]);
+                    }
+                }
+                Console.ResetColor();
+                Console.WriteLine();
+            }
+        }
+
+        public char GetCell(int row, int col)
+        {
+            return grid[row, col];
+        }
+
+
 
         public bool IsFree(int row, int col)
         {

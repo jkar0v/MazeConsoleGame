@@ -125,14 +125,6 @@ namespace MazeConsoleApp
                     lines.Add(line);
                 }
             }
-            //using (var reader = new StreamReader(mazeFilePath))
-            //{
-            //    string line;
-            //    while ((line = reader.ReadLine()) != null)
-            //    {
-            //        Console.WriteLine($"[{line}]");
-            //    }
-            //}
             Console.WriteLine("Край на файла");
 
 
@@ -185,11 +177,38 @@ namespace MazeConsoleApp
 
         private void PlayLoop()
         {
-            while (true)
+
+            while (maze.Cols > Console.WindowWidth || maze.Rows > Console.WindowHeight - 1)
             {
                 Console.Clear();
-                maze.Print(player);
-                Console.WriteLine("Move with W/A/S/D or ← ↑ ↓ →. Enter 0 to show solution. Q to quit.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Моля, пуснете играта на цел екран!");
+                Console.ResetColor();
+                Console.WriteLine("Натиснете Enter за да опитате пак.");
+                Console.ReadLine();
+            }
+            Console.Clear();
+            maze.Print();
+
+
+            Console.SetCursorPosition(player.Col, player.Row);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write('@');
+            Console.ResetColor();
+
+            bool done = false;
+            while (true)
+            {
+                if (!done)
+                {
+                    Console.SetCursorPosition(0, maze.Rows + 1);
+                    Console.WriteLine("-- RULES --");
+                    Console.WriteLine("Move with: W / A / S / D or ← ↑ ↓ →");
+                    Console.WriteLine("\nCommands:");
+                    Console.WriteLine("0 - Show solution");
+                    Console.WriteLine("P - Give up");
+                    Console.WriteLine("Q - Quit");
+                }
                 var key = Console.ReadKey(true).Key;
 
                 if (key == ConsoleKey.Q)
@@ -198,39 +217,63 @@ namespace MazeConsoleApp
                 if (key == ConsoleKey.D0 || key == ConsoleKey.NumPad0)
                 {
                     maze.ShowHelpPaths(player.Row, player.Col); // Оцветява пътя от началото и от човека до края
-                    //var path = maze.Solve(maze.StartRow, maze.StartCol, maze.EndRow, maze.EndCol);
-                    //if (path != null)
-                    //{
-                    //    foreach (var (r, c) in path)
-                    //    {
-                    //        player.Row = r;
-                    //        player.Col = c;
-                    //        Console.Clear();
-                    //        maze.Print(player);
-                    //        Thread.Sleep(100); // по-кратко за по-бърза анимация
-                    //    }
-                    //    Console.WriteLine("\nНатисни Enter.");
-                    //    Console.ReadLine();
-                    //}
-                    //else
-                    //{
-                    //    Console.WriteLine("No solution found.");
-                    //    Console.ReadKey();
-                    //}
+                    Console.Clear();
+                    maze.Print(player);
+                    continue;
+                }
+                if (key == ConsoleKey.P)
+                {
+                    var path = maze.Solve(maze.StartRow, maze.StartCol, maze.EndRow, maze.EndCol);
+                    if (path != null)
+                    {
+                        foreach (var (r, c) in path)
+                        {
+                            player.Row = r;
+                            player.Col = c;
+                            Console.Clear();
+                            maze.Print(player);
+                            Thread.Sleep(100);
+                        }
+                        done = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No solution found.");
+                        Console.ReadKey();
+                    }
                     continue;
                 }
 
+                // Изтриваме стария играч
+                Console.SetCursorPosition(player.Col, player.Row);
+                char oldCell = maze.GetCell(player.Row, player.Col); // Вземаме какво има под играча
+                if (oldCell == '#') Console.ForegroundColor = ConsoleColor.DarkGray;
+                else if (oldCell == 'X') Console.ForegroundColor = ConsoleColor.Green;
+                else if (oldCell == '.') Console.ForegroundColor = ConsoleColor.Magenta;
+                else if (oldCell == '*') Console.ForegroundColor = ConsoleColor.Blue;
+                else Console.ResetColor();
+
+                Console.Write(oldCell);
+                Console.ResetColor();
+
+                // Преместваме играча
                 player.Move(key, maze);
+
+                // Рисуваме новата позиция
+                Console.SetCursorPosition(player.Col, player.Row);
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write('@');
+                Console.ResetColor();
+
                 if (player.Row == maze.EndRow && player.Col == maze.EndCol)
                 {
-                    Console.Clear();
-                    maze.Print(player);
+                    Console.SetCursorPosition(0, maze.Rows + 2);
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("\nПоздравления! Стигна до края на лабиринта!");
+                    Console.WriteLine("Поздравления! Стигна до края на лабиринта!");
                     Console.ResetColor();
                     Console.WriteLine("Натисни Enter, за да се върнеш в менюто.");
                     Console.ReadLine();
-                    break; // излиза от while цикъла и приключва текущата игра
+                    break;
                 }
             }
         }
