@@ -40,15 +40,10 @@ namespace MazeConsoleApp
                         EndCol = j;
                         foundEnd = true;
                     }
-
-                    if (foundStart && foundEnd)
-                        break;
                 }
-                if (foundStart && foundEnd)
-                    break;
             }
-
         }
+
 
         // Конструктор от двумерен масив (за автоматично генериране)
         public Maze(char[,] customGrid)

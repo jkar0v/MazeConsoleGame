@@ -60,11 +60,37 @@ namespace MazeConsoleApp
             Console.Clear();
             Console.WriteLine("Избери ниво:");
 
-            string[] files = Directory.GetFiles("Levels", "*.txt");
+            string[] files = Directory.GetFiles(@"..\..\..\Levels", "*.txt");
+
+            // Правим си нов масив със същите файлове, но ще го сортираме ръчно
+            for (int i = 0; i < files.Length - 1; i++)
+            {
+                for (int j = i + 1; j < files.Length; j++)
+                {
+                    int num1 = GetLevelNumber(files[i]);
+                    int num2 = GetLevelNumber(files[j]);
+
+                    if (num1 > num2)
+                    {
+                        // Разменяме местата
+                        string temp = files[i];
+                        files[i] = files[j];
+                        files[j] = temp;
+                    }
+                }
+            }
 
             for (int i = 0; i < files.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {Path.GetFileName(files[i])}");
+            }
+
+            // Този метод взима номера от името
+            int GetLevelNumber(string filePath)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+                string numberPart = fileName.Replace("level ", "");
+                return int.Parse(numberPart);
             }
 
             Console.Write("Въведи номер на ниво: ");
@@ -72,7 +98,7 @@ namespace MazeConsoleApp
                 selected >= 1 && selected <= files.Length)
             {
                 mazeFilePath = files[selected - 1];
-                PlayFromFile(); // използваме вече готовия метод!
+                PlayFromFile();
             }
             else
             {
@@ -86,12 +112,34 @@ namespace MazeConsoleApp
             LoadMazeFromFile();
             PlayLoop();
         }
+
         private void LoadMazeFromFile()
         {
-            var lines = File.ReadAllLines(mazeFilePath);
-            maze = new Maze(lines);
+            List<string> lines = new List<string>();
+
+            using (StreamReader reader = new StreamReader(mazeFilePath))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+            }
+            //using (var reader = new StreamReader(mazeFilePath))
+            //{
+            //    string line;
+            //    while ((line = reader.ReadLine()) != null)
+            //    {
+            //        Console.WriteLine($"[{line}]");
+            //    }
+            //}
+            Console.WriteLine("Край на файла");
+
+
+            maze = new Maze(lines.ToArray());
             player = new Player(maze.StartRow, maze.StartCol);
         }
+
 
         private void PlayRandomMaze()
         {
