@@ -16,6 +16,7 @@ namespace MazeConsoleApp
 
         public void Start()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             while (true)
             {
                 ShowMenu();
