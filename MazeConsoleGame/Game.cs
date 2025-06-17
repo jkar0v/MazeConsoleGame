@@ -92,7 +92,7 @@ namespace MazeConsoleApp
                 return int.Parse(numberPart);
             }
 
-            Console.Write("\nEnter number of a level: ");
+            Console.Write("\nEnter a number of a level: ");
             if (int.TryParse(Console.ReadLine(), out int selected) &&
                 selected >= 1 && selected <= files.Length)
             {
@@ -226,7 +226,7 @@ namespace MazeConsoleApp
                             player.Col = c;
                             Console.Clear();
                             maze.Print(player);
-                            Thread.Sleep(100);
+                            //Thread.Sleep(100);
                         }
                     }
                     else
@@ -261,7 +261,7 @@ namespace MazeConsoleApp
                 // Проверяваме дали играчът е стигнал до края на лабиринта
                 if (player.Row == maze.EndRow && player.Col == maze.EndCol)
                 {
-                    Console.SetCursorPosition(0, maze.Rows + 11);
+                    Console.SetCursorPosition(0, maze.Rows + 10);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Congratulations! You finished the maze!");
                     Console.ResetColor();
