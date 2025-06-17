@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace MazeConsoleApp
@@ -15,7 +16,6 @@ namespace MazeConsoleApp
 
         public void Start()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             while (true)
             {
                 ShowMenu();
@@ -178,7 +178,7 @@ namespace MazeConsoleApp
         private void PlayLoop()
         {
 
-            while (maze.Cols > Console.WindowWidth || maze.Rows > Console.WindowHeight - 1)
+            while (maze.Cols > Console.WindowWidth || maze.Rows > Console.WindowHeight - 10)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -202,12 +202,7 @@ namespace MazeConsoleApp
                 if (!done)
                 {
                     Console.SetCursorPosition(0, maze.Rows + 1);
-                    Console.WriteLine("-- RULES --");
-                    Console.WriteLine("Move with: W / A / S / D or ← ↑ ↓ →");
-                    Console.WriteLine("\nCommands:");
-                    Console.WriteLine("0 - Show solution");
-                    Console.WriteLine("P - Give up");
-                    Console.WriteLine("Q - Quit");
+                    ShowRules();
                 }
                 var key = Console.ReadKey(true).Key;
 
@@ -276,6 +271,28 @@ namespace MazeConsoleApp
                     break;
                 }
             }
+        }
+        private void ShowRules()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("=== GAME RULES ===");
+            Console.ResetColor();
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Movement:");
+            Console.ResetColor();
+            Console.WriteLine("W / A / S / D   or   ← ↑ ↓ →");
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Options:");
+            Console.ResetColor();
+            Console.WriteLine("0  -  Show solution");
+            Console.WriteLine("P  -  Give up");
+            Console.WriteLine("Q  -  Quit");
         }
     }
 }

@@ -1,4 +1,4 @@
-
+п»ї
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +14,7 @@ namespace MazeConsoleApp
 
         public int EndRow, EndCol;
 
-        // Конструктор от текстов масив
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РѕС‚ С‚РµРєСЃС‚РѕРІ РјР°СЃРёРІ
         public Maze(string[] lines)
         {
             Rows = lines.Length;
@@ -45,7 +45,7 @@ namespace MazeConsoleApp
         }
 
 
-        // Конструктор от двумерен масив (за автоматично генериране)
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РѕС‚ РґРІСѓРјРµСЂРµРЅ РјР°СЃРёРІ (Р·Р° Р°РІС‚РѕРјР°С‚РёС‡РЅРѕ РіРµРЅРµСЂРёСЂР°РЅРµ)
         public Maze(char[,] customGrid)
         {
             Rows = customGrid.GetLength(0);
@@ -196,19 +196,19 @@ namespace MazeConsoleApp
         }
         public void ShowHelpPaths(int playerRow, int playerCol)
         {
-            // 1. Изчистване на стари символи
+            // 1. РР·С‡РёСЃС‚РІР°РЅРµ РЅР° СЃС‚Р°СЂРё СЃРёРјРІРѕР»Рё
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Cols; j++)
                     if (grid[i, j] == '.' || grid[i, j] == '*')
                         grid[i, j] = ' ';
 
-            // 2. Път от начало до край
+            // 2. РџСЉС‚ РѕС‚ РЅР°С‡Р°Р»Рѕ РґРѕ РєСЂР°Р№
             var pathToEnd = Solve(StartRow, StartCol, EndRow, EndCol);
 
-            // 3. Път от текущата позиция до началото
+            // 3. РџСЉС‚ РѕС‚ С‚РµРєСѓС‰Р°С‚Р° РїРѕР·РёС†РёСЏ РґРѕ РЅР°С‡Р°Р»РѕС‚Рѕ
             var pathToStart = Solve(playerRow, playerCol, StartRow, StartCol);
 
-            // 4. Маркиране на пътя до края с '.'
+            // 4. РњР°СЂРєРёСЂР°РЅРµ РЅР° РїСЉС‚СЏ РґРѕ РєСЂР°СЏ СЃ '.'
             if (pathToEnd != null)
             {
                 foreach (var (r, c) in pathToEnd)
@@ -218,7 +218,7 @@ namespace MazeConsoleApp
                 }
             }
 
-            // 5. Маркиране на пътя до началото с '*'
+            // 5. РњР°СЂРєРёСЂР°РЅРµ РЅР° РїСЉС‚СЏ РґРѕ РЅР°С‡Р°Р»РѕС‚Рѕ СЃ '*'
             if (pathToStart != null)
             {
                 foreach (var (r, c) in pathToStart)
