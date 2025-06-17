@@ -14,7 +14,6 @@ namespace MazeConsoleApp
 
         public int EndRow, EndCol;
 
-        // Конструктор от текстов масив
         public Maze(string[] lines)
         {
             Rows = lines.Length;

@@ -51,7 +51,7 @@ namespace MazeConsoleApp
                     break;
                 default:
                     Console.WriteLine("\nНевалиден избор!");
-                    Thread.Sleep(1000); // малко изчакване за ефект
+                    Thread.Sleep(1000);
                     break;
             }
         }
@@ -63,7 +63,7 @@ namespace MazeConsoleApp
 
             string[] files = Directory.GetFiles(@"..\..\..\Levels", "*.txt");
 
-            // Правим си нов масив със същите файлове, но ще го сортираме ръчно
+            //Bubble Sort
             for (int i = 0; i < files.Length - 1; i++)
             {
                 for (int j = i + 1; j < files.Length; j++)
@@ -73,7 +73,6 @@ namespace MazeConsoleApp
 
                     if (num1 > num2)
                     {
-                        // Разменяме местата
                         string temp = files[i];
                         files[i] = files[j];
                         files[j] = temp;
@@ -86,7 +85,6 @@ namespace MazeConsoleApp
                 Console.WriteLine($"{i + 1}. {Path.GetFileName(files[i])}");
             }
 
-            // Този метод взима номера от името
             int GetLevelNumber(string filePath)
             {
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
@@ -94,7 +92,7 @@ namespace MazeConsoleApp
                 return int.Parse(numberPart);
             }
 
-            Console.Write("Въведи номер на ниво: ");
+            Console.Write("\nВъведи номер на ниво: ");
             if (int.TryParse(Console.ReadLine(), out int selected) &&
                 selected >= 1 && selected <= files.Length)
             {
@@ -103,8 +101,8 @@ namespace MazeConsoleApp
             }
             else
             {
-                Console.WriteLine("Невалиден избор. Натисни Enter.");
-                Console.ReadLine();
+                Console.WriteLine("Невалиден избор. Опитай пак.");
+                Thread.Sleep(1000);
             }
         }
 
@@ -126,9 +124,6 @@ namespace MazeConsoleApp
                     lines.Add(line);
                 }
             }
-            Console.WriteLine("Край на файла");
-
-
             maze = new Maze(lines.ToArray());
             player = new Player(maze.StartRow, maze.StartCol);
         }
@@ -137,11 +132,11 @@ namespace MazeConsoleApp
         private void PlayRandomMaze()
         {
             Console.Clear();
-            Console.WriteLine("Избери трудност:");
+            Console.WriteLine("Choose difficulty:");
             Console.WriteLine("1 - easy");
             Console.WriteLine("2 - medium");
             Console.WriteLine("3 - hard\n");
-            Console.Write("Избери опция: ");
+            Console.Write("Your choice: ");
 
             string difficulty = null;
 
@@ -163,8 +158,8 @@ namespace MazeConsoleApp
                     break;
                 default:
                     Console.Clear();
-                    Console.WriteLine("Невалиден избор. Избираме случайно...");
-                    Thread.Sleep(1000); // малко изчакване за ефект
+                    Console.WriteLine("Invalid input. Generating random maze...");
+                    Thread.Sleep(1000);
                     break;
             }
 
@@ -179,19 +174,23 @@ namespace MazeConsoleApp
         private void PlayLoop()
         {
 
+            //Проверка дали лабиринтът е твърде голям за конзолата
             while (maze.Cols > Console.WindowWidth || maze.Rows > Console.WindowHeight - 10)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Моля, пуснете играта на цел екран!");
                 Console.ResetColor();
-                Console.WriteLine("Натиснете Enter за да опитате пак.");
-                Console.ReadLine();
+                Console.WriteLine("Натиснете Enter за да опитате пак. Или Q за да се върнете към менюто.");
+                var key = Console.ReadKey(true).Key;
+                if (key == ConsoleKey.Q)
+                    Start();                    
             }
+            // Изчистваме конзолата и рисуваме лабиринта
             Console.Clear();
             maze.Print();
 
-
+            // Позиционираме играча в началото
             Console.SetCursorPosition(player.Col, player.Row);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write('@');
@@ -207,12 +206,14 @@ namespace MazeConsoleApp
                 }
                 var key = Console.ReadKey(true).Key;
 
+                //Напускаме играта
                 if (key == ConsoleKey.Q)
                     break;
 
+                // Оцветява пътя от началото и от човека до края
                 if (key == ConsoleKey.D0 || key == ConsoleKey.NumPad0)
                 {
-                    maze.ShowHelpPaths(player.Row, player.Col); // Оцветява пътя от началото и от човека до края
+                    maze.ShowHelpPaths(player.Row, player.Col);
                     Console.Clear();
                     maze.Print(player);
                     continue;
@@ -261,6 +262,7 @@ namespace MazeConsoleApp
                 Console.Write('@');
                 Console.ResetColor();
 
+                // Проверяваме дали играчът е стигнал до края на лабиринта
                 if (player.Row == maze.EndRow && player.Col == maze.EndCol)
                 {
                     Console.SetCursorPosition(0, maze.Rows + 2);
