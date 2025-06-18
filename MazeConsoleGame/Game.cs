@@ -181,7 +181,7 @@ namespace MazeConsoleApp
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Please, enter fullscreen!");
                 Console.ResetColor();
-                Console.WriteLine("Click Enter for try again. Or Q to go back.");
+                Console.WriteLine("Click Enter to reload. Or Q to go back.");
                 var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.Q)
                     Start();
@@ -226,7 +226,7 @@ namespace MazeConsoleApp
                             player.Col = c;
                             Console.Clear();
                             maze.Print(player);
-                            //Thread.Sleep(100);
+                            Thread.Sleep(100);
                         }
                     }
                     else
